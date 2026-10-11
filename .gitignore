@@ -11,6 +11,7 @@
 bin/
 dist/
 build/
+CLI-apps/task-tracker/music
 
 # Go build cache
 .cache/
