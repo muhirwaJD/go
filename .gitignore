@@ -1,66 +1,73 @@
-# Build artifacts
+# ---------- Go build output ----------
+# Go binaries have no file extension, so list each module's binary by name.
+/mymodule
+/phase-1-go-fundamentals/main
+/phase-1-go-fundamentals/phase1
+/phase-2-databases/mymodule
+/CLI-apps/task-tracker/music
+bin/
+dist/
+build/
+output/
+releases/
 *.exe
+*.exe~
 *.dll
 *.so
 *.dylib
 *.o
 *.a
+*.test
 *.out
 
-# Binaries
-bin/
-dist/
-build/
-CLI-apps/task-tracker/music
+# Air live-reload output
+tmp/
+
+# Test coverage
+coverage.*
+*.cover
+*.coverprofile
+
+# Claude Code session worktrees
+.claude/worktrees/
+
+# Go workspace files (local only)
+go.work
+go.work.sum
+
+# Dependencies
+vendor/
+go.sum.backup
 
 # Go build cache
 .cache/
-*.test
 
-# IDE and Editor files
-.vscode/
+# ---------- Secrets ----------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+private/
+local/
+
+# ---------- IDE / editor ----------
 .idea/
+.vscode/
 *.swp
 *.swo
 *~
 *.sublime-project
 *.sublime-workspace
-.DS_Store
-Thumbs.db
 
-# Environment variables (secrets!)
-.env
-.env.local
-.env.*.local
-*.pem
-*.key
-
-# Temporary files
-tmp/
-temp/
-*.log
-*.pid
-
-# Test coverage
-coverage.txt
-*.cover
-*.out
-
-# Vendor directory (if using Go modules)
-vendor/
-go.sum.backup
-
-# OS files
+# ---------- OS ----------
 .DS_Store
 Thumbs.db
 .AppleDouble
 .LSOverride
 
-# Local development
-local/
-private/
-secrets/
-
-# Build output
-output/
-releases/
+# ---------- Logs / temp ----------
+temp/
+*.log
+*.pid
