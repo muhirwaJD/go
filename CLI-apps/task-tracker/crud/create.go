@@ -2,31 +2,31 @@ package crud
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"music/models"
+
+	"github.com/lib/pq"
+	"github.com/lib/pq/pqerror"
 )
 
-func Create(DB *sql.DB, value models.Song) error {
-	fmt.Println("Hello We're going to create a song in the DB")
+var ErrDuplicateSong = errors.New("song already exists")
 
-	name := value.Name
-	year := value.Year
-	artist := value.Artist
+func Create(DB *sql.DB, value models.Song) (models.Song, error) {
+	var saved models.Song
 
-	exec, err := DB.Exec("INSERT INTO songs (name, artist, year)"+
-		"VALUES ($1, $2, $3);", name, artist, year)
+	query := `INSERT INTO songs (name, artist, year)
+			VALUES ($1, $2, $3)
+			RETURNING id, name, artist, year;`
+
+	err := DB.QueryRow(query, value.Name, value.Artist, value.Year).Scan(&saved.ID, &saved.Name, &saved.Artist, &saved.Year)
 
 	if err != nil {
-		return err
+		var pqErr *pq.Error
+		if errors.As(err, &pqErr) && pqErr.Code == pqerror.UniqueViolation {
+			return models.Song{}, fmt.Errorf("%q by %s: %w", value.Name, value.Artist, ErrDuplicateSong)
+		}
+		return models.Song{}, fmt.Errorf("create song %q: %w", value.Name, err)
 	}
-
-	results, err := exec.RowsAffected()
-	if err != nil {
-		return err
-	}
-
-	if results != 1 {
-		return fmt.Errorf("expected 1 row affected, got %d", results)
-	}
-	return nil
+	return saved, nil
 }
