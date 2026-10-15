@@ -11,7 +11,8 @@ import (
 // readCmd represents the read command
 var readCmd = &cobra.Command{
 	Use:   "read",
-	Short: "Getting all the songs",
+	Short: "List all songs",
+	Args:  cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		songs, err := crud.ReadSongs(database.DB)
 
@@ -25,7 +26,7 @@ var readCmd = &cobra.Command{
 		for _, s := range songs {
 			fmt.Printf("#%d: %s — %s (%d)\n", s.ID, s.Name, s.Artist, s.Year)
 		}
-		return err
+		return nil
 	},
 }
 

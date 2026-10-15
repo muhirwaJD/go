@@ -21,7 +21,7 @@ func ReadSongs(DB *sql.DB) ([]models.Song, error) {
 		var s models.Song
 		err := rows.Scan(&s.ID, &s.Name, &s.Artist, &s.Year)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("scan song: %w", err)
 		}
 		songs = append(songs, s)
 	}
