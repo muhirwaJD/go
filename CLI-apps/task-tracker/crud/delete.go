@@ -14,9 +14,9 @@ func DeleteSong(DB *sql.DB, value models.Song) (models.Song, error) {
 
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return deleteSong, fmt.Errorf("song %s doesn't exist", deleteSong.Name)
+			return models.Song{}, fmt.Errorf("id %d: %w", value.ID, ErrSongNotFound)
 		}
-		return deleteSong, fmt.Errorf("Delete song: %w", err)
+		return models.Song{}, fmt.Errorf("delete song %d: %w", value.ID, err)
 	}
 	return deleteSong, nil
 }
